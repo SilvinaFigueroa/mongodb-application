@@ -16,6 +16,89 @@ try {
     console.log(error)
 }
 
-let database = connection.db("SBA-TEST")
+const database = connection.db("SBA-Mongo")
 
 export default database
+
+
+// Collections for reference
+
+// db.createCollection("Company", {
+//     validator: {
+//       $jsonSchema: {
+//         bsonType: "object",
+//         required: ["name"],
+//         properties: {
+//           name: {
+//             bsonType: "string",
+//             description: "Company is a mandatory field and must be text"
+//           },
+//           location: {
+//             bsonType: "string",
+//             description: "Location if provided must be text"
+//           },
+//           "Employees number": {
+//             bsonType: "int",
+//             minimum: 0,
+//             description: "Employees number: If provided, must be a number greater than or equal to 0"
+//           }
+//         }
+//       }
+//     }
+//   })
+//   { ok: 1 }
+//   db.createCollection("Candidate", {
+//     validator: {
+//       $jsonSchema: {
+//         bsonType: "object",
+//         required: ["name", "email"],
+//         properties: {
+//           name: {
+//             bsonType: "string",
+//             description: "Name must be text and is required"
+//           },
+//           location: {
+//             bsonType: "string",
+//             description: "If provided, location must be text"
+//           },
+//           email: {
+//             bsonType: "string",
+//             pattern: "^.+@.+\\..+$",
+//             description: "Email is required and must follow the format something@mail.com"
+//           }
+//         }
+//       }
+//     }
+//   })
+//   { ok: 1 }
+//   db.createCollection("Job-application", {
+//     validator: {
+//       $jsonSchema: {
+//         bsonType: "object",
+//         required: ["company_id", "candidate_id", "description"],
+//         properties: {
+//           company_id: {
+//             bsonType: "objectId",
+//             description: "Verify the Company ID provided, there is no matching value"
+//           },
+//           candidate_id: {
+//             bsonType: "objectId",
+//             description: "Verify the Candidate ID provided, there i no matching value"
+//           },
+//           description: {
+//             bsonType: "string",
+//             description: "Description must be a text"
+//           },
+//           salary: {
+//             bsonType: "int",
+//             minimum: 0,
+//             description: "If provided, Salary must be an integer greater than or equal to 0"
+//           },
+//           posted_on: {
+//             bsonType: "date",
+//             description: "Posted on: must be a date"
+//           }
+//         }
+//       }
+//     }
+//   })
