@@ -16,10 +16,9 @@ try {
     console.log(error)
 }
 
-const database = connection.db("SBA-Mongo")
+let database = connection.db("SBA-Mongo")
 
 export default database
-
 
 // Collections for reference
 
