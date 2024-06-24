@@ -4,6 +4,7 @@ import cors from 'cors'
 import candidates from './routes/candidates.mjs'
 import companies from './routes/companies.mjs'
 import jobs from './routes/job_application.mjs'
+import { Collection, Mongoose } from 'mongoose'
 
 
 dotenv.config()
@@ -37,3 +38,10 @@ app.use((err,req,res,next)=>{
 app.listen(PORT,()=>{
     console.log(`Server running on port ${PORT}`)
 })
+
+
+// TODO__________________________
+// - Create a database user for the instructor and add it on the submission comments
+// - Create at least 10 records for each Collection
+// - Separate the routes login into the Controllers
+// - Implement Mongoose
