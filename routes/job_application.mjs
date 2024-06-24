@@ -1,11 +1,10 @@
 import express, { query } from 'express'
 import database from '../db/conn.mjs'
 import { ObjectId } from 'mongodb'
+import { Query } from 'mongoose'
 
 
 const router = express.Router()
-
-
 
 
 router.get('/all', async (req, res) => {
@@ -91,7 +90,6 @@ router.delete('/delete/', async (req,res)=> {
         let objectId
         
         try {
-            
             objectId = new ObjectId(id)
         }catch(err){
             res.status(400).send(`The ID is incorrect or doesn't exits - ${err.message}`)
@@ -102,7 +100,7 @@ router.delete('/delete/', async (req,res)=> {
         let jobCollection = db.collection("Job-application")
         let query = { _id: objectId };
 
-        // find the Id object on the collection and send it as response 
+        // find the Id object on the collection
         let result = await jobCollection.findOne(query);
 
         if (!result) {
@@ -115,6 +113,56 @@ router.delete('/delete/', async (req,res)=> {
         console.log(err);
         res.status(err.status).send(err.message);
     }
+
+})
+
+router.patch('/update/', async (req,res)=> {
+
+    const { id, company_id, candidate_id, description, salary, posted_on } = req.body
+    console.log(id, company_id, candidate_id, description, salary, posted_on)
+        
+    if(!id){
+        return res.status(400).send('The ID of the record to be edited is mandatory')
+    }
+
+    let recordId;
+
+    try {
+        recordId = new ObjectId(id)
+    } catch (err) {
+        return res.status(400).send('Record ID is not valid');
+    }
+
+    // Creating an object with the updated fields
+    const updates = {};
+    if (company_id) updates.company_id = new ObjectId(company_id);
+    if (candidate_id) updates.candidate_id = new ObjectId(candidate_id);
+    if (description) updates.description = description;
+    if (salary) updates.salary = salary;
+    if (posted_on) updates.posted_on = new Date(posted_on);
+        
+    try{
+        const db = await database
+        let jobCollection = db.collection("Job-application")
+        let query = { _id: recordId }
+        console.log(query)
+
+        // find the Id object on the collection
+        let result = await jobCollection.findOne(query)
+
+        if(!result){return res.status(404).send('Record not found')}
+
+        // update record fields
+        await jobCollection.updateOne(query, { $set: updates })
+
+        let updatedRecord = await jobCollection.findOne(query)
+        console.log(updatedRecord)
+        res.status(200).json({ message: 'Document updated successfully', updated_fields : updates, updated_Record : updatedRecord})
+
+        }catch(err){
+            res.status(400).send(`ERROR! The record was not updated: - ${err.message}`)
+            return
+        }   
 
 })
 
