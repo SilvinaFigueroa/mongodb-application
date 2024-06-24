@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { query } from 'express'
 import database from '../db/conn.mjs'
 import { ObjectId } from 'mongodb'
 
@@ -6,21 +6,40 @@ import { ObjectId } from 'mongodb'
 const router = express.Router()
 
 
+
+
+router.get('/all', async (req, res) => {
+    try {
+        const db = await database
+        let jobCollection = db.collection("Job-application")
+
+        // Fetch all the candidates in an array 
+        const allJobs = await jobCollection.find({}).toArray()
+
+        res.status(200).json(allJobs)
+
+    } catch (err) {
+        console.error(err)
+        res.status(500).send({ message: `Error fetching documents ${err.message}` })
+    }
+})
+
 router.post('/add', async (req, res) => {
     const { company_id, candidate_id, description, salary } = req.body
     console.log(company_id, candidate_id, description, salary)
 
-
     try {
         const db = await database;
         let jobCollection = db.collection("Job-application")
+        
         let companyId , candidateId
 
         try {
 
             console.log("try/catch with object ID " + company_id)
-            companyId = new ObjectId(company_id)
+            companyId = new ObjectId(company_id);
             console.log(`Company ID Object ${companyId}`)
+
             candidateId = new ObjectId(candidate_id)
             console.log(`Candidate ID Object ${candidateId}`)
 
@@ -30,14 +49,14 @@ router.post('/add', async (req, res) => {
         }
 
         // Include posted date 
-        let postedOn = new Date();
+        let postedOn = new Date()
 
         const newJob = {
-            company_id,
-            candidate_id,
-            description,
+            company_id: companyId,
+            candidate_id: candidateId,
+            description: description,
             posted_on: postedOn
-        };
+        }
 
         // Add salary if exist 
         if (salary) { newJob.salary = salary }
@@ -48,11 +67,11 @@ router.post('/add', async (req, res) => {
             console.log(`Type of ${key}: ${typeof value}`);
         }
 
+        // Insert newJob to collection
         let result = await jobCollection.insertOne(newJob)
         console.log(`Jobb-application inserted ${result}`)
 
         res.status(201).json(newJob)
-
 
     } catch (err) {
         console.error(err)
@@ -65,6 +84,38 @@ router.post('/add', async (req, res) => {
 
 })
 
+router.delete('/delete/', async (req,res)=> {
 
+    try {
+        const { id } = req.body;
+        let objectId
+        
+        try {
+            
+            objectId = new ObjectId(id)
+        }catch(err){
+            res.status(400).send(`The ID is incorrect or doesn't exits - ${err.message}`)
+            return
+        }   
+
+        const db = await database
+        let jobCollection = db.collection("Job-application")
+        let query = { _id: objectId };
+
+        // find the Id object on the collection and send it as response 
+        let result = await jobCollection.findOne(query);
+
+        if (!result) {
+            throw error('Not Found', 404);
+        } else {
+            await jobCollection.deleteOne(query)
+            res.status(200).json({ message: 'Document deleted successfully', deletedDocument: result });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(err.status).send(err.message);
+    }
+
+})
 
 export default router
