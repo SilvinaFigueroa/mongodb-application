@@ -36,7 +36,7 @@ export default database
 //             bsonType: "string",
 //             description: "Location if provided must be text"
 //           },
-//           "Employees number": {
+//           "employees": {
 //             bsonType: "int",
 //             minimum: 0,
 //             description: "Employees number: If provided, must be a number greater than or equal to 0"
