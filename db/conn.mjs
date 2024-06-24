@@ -1,5 +1,5 @@
 
-import {MongoClient} from "mongodb"
+import { MongoClient } from "mongodb"
 import dotenv from 'dotenv'
 
 // This line tells the dotenv package to load the variables from your .env file into the environment.
@@ -12,11 +12,12 @@ let connection
 try {
     connection = await client.connect()
     console.log("Connected to Mongo")
-}catch(error){
+} catch (error) {
     console.log(error)
 }
 
 let database = connection.db("SBA-Mongo")
+
 
 export default database
 

@@ -12,7 +12,9 @@ const app = express()
 const PORT = process.env.PORT || 4000
 
 // Body-parser middleware
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+
 // Include Cross-Origin Resource Sharing
 app.use(cors())
 
