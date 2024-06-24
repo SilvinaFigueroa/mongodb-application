@@ -4,7 +4,6 @@ import cors from 'cors'
 import candidates from './routes/candidates.mjs'
 import companies from './routes/companies.mjs'
 import jobs from './routes/job_application.mjs'
-import { Collection, Mongoose } from 'mongoose'
 
 
 dotenv.config()
