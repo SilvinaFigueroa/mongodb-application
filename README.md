@@ -12,7 +12,7 @@ This application manages candidates, companies, and job applications using Mongo
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/mongodb-application.git
+   git clone https://github.com/SilvinaFigueroa/mongodb-application
    cd mongodb-application
 
 2. Install dependencies:
