@@ -40,8 +40,5 @@ app.listen(PORT,()=>{
 
 
 // TODO__________________________
-// - Create a database user for the instructor and add it on the submission comments
-// - Create at least 10 records for each Collection
-// - Separate the routes login into the Controllers
+// - Separate the routes logic into the Controllers
 // - Implement Mongoose
-// - Add Readme
